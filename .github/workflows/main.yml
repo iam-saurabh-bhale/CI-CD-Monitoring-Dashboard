@@ -2,7 +2,7 @@ name: Docker Image Build and Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main-demo" ]
   workflow_dispatch:
 
 
