@@ -1,9 +1,7 @@
 name: Docker Image Build and Deploy
 
 on:
-  push:
-    branches: [ "main-demo" ]
-  workflow_dispatch:
+  workflow_dispatch:   # 👈 Manual trigger
 
 
 permissions:
