@@ -44,24 +44,35 @@ jobs:
               echo "Docker Compose already installed."
             fi
 
-            # 2) Clone repo if not exists
-            if [ ! -d "your-repo-name" ]; then
-              git clone https://github.com/your-username/your-repo-name.git
+           # 2) Install git if not present
+            if ! command -v git &> /dev/null
+            then
+              echo "Installing Git..."
+              sudo yum install -y git
+            else
+              echo "Git already installed."
             fi
 
-            cd your-repo-name/.github-actions-dashboard
+            # 3) Remove old repo if exists, then clone latest
+            if [ -d "CI-CD-Monitoring-Dashboard" ]; then
+              echo "Removing old repo..."
+              sudo rm -rf CI-CD-Monitoring-Dashboard
+            fi
+            git clone git@github.com:iam-saurabh-bhale/CI-CD-Monitoring-Dashboard.git
 
-            # 3) Stop and remove all containers + images
+            cd CI-CD-Monitoring-Dashboard/.github-actions-dashboard
+
+            # 4) Stop and remove all containers + images
             echo "Cleaning up old containers and images..."
             sudo docker ps -aq | xargs -r sudo docker stop
             sudo docker ps -aq | xargs -r sudo docker rm
             sudo docker images -q | xargs -r sudo docker rmi -f
 
-            # 4) Start containers with docker-compose
+            # 5) Start containers with docker-compose
             echo "Starting new containers..."
             sudo docker-compose up -d --build
 
-            # 5) Wait 15s and verify 3 containers running
+            # 6) Wait 15s and verify 3 containers running
             echo "Waiting 15 seconds for containers to start..."
             sleep 15
             RUNNING=$(sudo docker ps -q | wc -l)
