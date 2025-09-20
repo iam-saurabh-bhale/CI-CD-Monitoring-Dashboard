@@ -1,9 +1,7 @@
 name: Deploy to EC2 with Docker Compose
 
 on:
-  push:
-    branches:
-      - main   # change branch if needed
+  workflow_dispatch:   # 👈 Manual trigger
 
 jobs:
   deploy:
