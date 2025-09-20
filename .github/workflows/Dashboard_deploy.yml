@@ -19,8 +19,8 @@ jobs:
           echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
           chmod 600 ec2_key.pem
 
-          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
-            set -e
+           ssh -T -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} << 'EOF'<< 'EOF'
+           set -e
 
             # 1) Update system and install Docker if not installed
             if ! command -v docker &> /dev/null
