@@ -1,0 +1,78 @@
+name: Deploy to EC2 with Docker Compose
+
+on:
+  push:
+    branches:
+      - main   # change branch if needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install SSH Client
+        run: sudo apt-get update && sudo apt-get install -y openssh-client
+
+      - name: Connect to EC2 and Deploy
+        run: |
+          echo "${{ secrets.EC2_SSH_KEY }}" > ec2_key.pem
+          chmod 600 ec2_key.pem
+
+          ssh -o StrictHostKeyChecking=no -i ec2_key.pem ec2-user@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+
+            # 1) Update system and install Docker if not installed
+            if ! command -v docker &> /dev/null
+            then
+              echo "Docker not found. Installing..."
+              sudo yum update -y
+              sudo amazon-linux-extras install docker -y || sudo yum install docker -y
+              sudo systemctl start docker
+              sudo systemctl enable docker
+            else
+              echo "Docker already installed."
+            fi
+
+            # Install Docker Compose if not present
+            if ! command -v docker-compose &> /dev/null
+            then
+              echo "Installing Docker Compose..."
+              sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+              sudo chmod +x /usr/local/bin/docker-compose
+            else
+              echo "Docker Compose already installed."
+            fi
+
+            # 2) Clone repo if not exists
+            if [ ! -d "your-repo-name" ]; then
+              git clone https://github.com/your-username/your-repo-name.git
+            fi
+
+            cd your-repo-name/.github-actions-dashboard
+
+            # 3) Stop and remove all containers + images
+            echo "Cleaning up old containers and images..."
+            sudo docker ps -aq | xargs -r sudo docker stop
+            sudo docker ps -aq | xargs -r sudo docker rm
+            sudo docker images -q | xargs -r sudo docker rmi -f
+
+            # 4) Start containers with docker-compose
+            echo "Starting new containers..."
+            sudo docker-compose up -d --build
+
+            # 5) Wait 15s and verify 3 containers running
+            echo "Waiting 15 seconds for containers to start..."
+            sleep 15
+            RUNNING=$(sudo docker ps -q | wc -l)
+
+            if [ "$RUNNING" -eq 3 ]; then
+              echo "✅ Success: All 3 containers are running."
+              exit 0
+            else
+              echo "❌ Error: Expected 3 containers, but found $RUNNING."
+              exit 1
+            fi
+          EOF
