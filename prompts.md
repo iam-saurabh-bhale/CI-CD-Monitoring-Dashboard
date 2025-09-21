@@ -1,5 +1,8 @@
-Terraform code example
+##Terraform code example
+
+
 user
+
 You are the terraform devloper and you need to write the code for below 
 1) Create VPC with one subnet with /24 range of subnet with routes and internet gateway added it.
 2) Create the PEM key named assigment3-pem
