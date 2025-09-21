@@ -1,7 +1,7 @@
-## Terraform code example
+# Terraform code example
 
 
-# User
+## User
 
 ```
 You are the terraform devloper and you need to write the code for below 
@@ -19,7 +19,7 @@ Name of Ec2 Is assignment 3 instance.
 
 ```
 
-# Output 
+## Output 
 
 ChatGPT
 Got it ✅. I’ll create a **modular Terraform setup** for your requirements.  
