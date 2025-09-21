@@ -18,7 +18,7 @@ Got it ✅. I’ll create a **modular Terraform setup** for your requirements.
 The structure will look like this:
 
 ```
-assignment3/
+infra/
 ├── main.tf
 ├── variables.tf
 ├── outputs.tf
@@ -407,7 +407,7 @@ You can download it here:
 After downloading:  
 ```bash
 unzip assignment3_terraform.zip
-cd assignment3
+cd infra
 terraform init
 terraform apply -auto-approve
 chmod 400 assignment3.pem
