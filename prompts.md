@@ -1,10 +1,9 @@
 ## Terraform code example
 
 
-user
+# User
 
 ```
-
 You are the terraform devloper and you need to write the code for below 
 1) Create VPC with one subnet with /24 range of subnet with routes and internet gateway added it.
 2) Create the PEM key named assigment3-pem
@@ -19,6 +18,8 @@ All resources should have tag of taks : assignment3
 Name of Ec2 Is assignment 3 instance.
 
 ```
+
+# Output 
 
 ChatGPT
 Got it ✅. I’ll create a **modular Terraform setup** for your requirements.  
