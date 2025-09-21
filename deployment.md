@@ -239,4 +239,19 @@ terraform destroy
 6. Apply the Configuration  
 7. Verify Resources  
 8. Deploy Application via SSH/GitHub Actions  
-9. Destroy Resources  
+9. Destroy Resources
+
+ 
+#  AI prompt 
+You are the terraform devloper and you need to write the code for below 
+1) Create VPC with one subnet with /24 range of subnet with routes and internet gateway added it.
+2) Create the PEM key named assigment3-pem
+3) Created Security group with name assignemt3-SG and keep the port 80 and port 22 open to all 0.0.0.0/0
+4) please create one Ec2 instance and use the subnet, Pem key and security group created above
+
+Please use the module approch for all this tasks and provide me the code.
+
+Cloud provider : AWS 
+All resources should have tag of taks : assignment3
+
+Name of Ec2 is assignment 3 instance.
